@@ -1,3 +1,10 @@
+   ██╗  ██╗██╗████████╗████████╗██╗   ██╗██╗      ██████╗ ██╗     
+   ██║ ██╔╝██║╚══██╔══╝╚══██╔══╝╚██╗ ██╔╝██║     ██╔═══██╗██║     
+   █████╔╝ ██║   ██║      ██║    ╚████╔╝ ██║     ██║   ██║██║     
+   ██╔═██╗ ██║   ██║      ██║     ╚██╔╝  ██║     ██║   ██║██║     
+   ██║  ██╗██║   ██║      ██║      ██║   ███████╗╚██████╔╝███████╗
+   ╚═╝  ╚═╝╚═╝   ╚═╝      ╚═╝      ╚═╝   ╚══════╝ ╚═════╝ ╚══════
+K I T T Y L O L
 local UI = loadstring(game:HttpGet("https://raw.githubusercontent.com/dyxreign/Luanny-UI/refs/heads/main/src/Luanny.lua"))()
 
 local Window = UI:CreateWindow({
@@ -8,7 +15,6 @@ local Window = UI:CreateWindow({
     ShowWindow = true
 })
 
--- ===== ANTI LAG MODULE =====
 local Antilag = {}
 local antilagEnabled = false
 local antilagMaterials = {}
@@ -64,7 +70,6 @@ function Antilag:Disable()
     self:Restore()
 end
 
--- ===== SETUP GLOBAL VARIABLES =====
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
@@ -119,7 +124,6 @@ Sys = {
     __first_parry_done = false
 }
 
--- ===== MANUAL SPAM SYSTEM (MỚI - CHỈ KHỞI TẠO KHI BẬT TOGGLE) =====
 setfpscap(9999)
 
 local remote, f_raw = nil, nil
@@ -132,7 +136,6 @@ local spamHeartbeatConn = nil
 local spamInputConn = nil
 local spamGui = nil
 
--- Hook remote (chạy 1 lần)
 local mt = getrawmetatable(game)
 local old = mt.__index
 setreadonly(mt, false)
@@ -287,7 +290,6 @@ local function destroyManualSpamUI()
     end
 end
 
--- ===== REMOTE CAPTURE =====
 local function isValidArgs(a)
     return #a == 7 and type(a[2]) == "string" and type(a[3]) == "number" and typeof(a[4]) == "CFrame" and type(a[5]) == "table" and type(a[6]) == "table" and type(a[7]) == "boolean"
 end
@@ -314,7 +316,6 @@ task.spawn(function()
     end)
 end)
 
--- ===== HELPER FUNCTIONS =====
 local function riverGetBall()
     local balls = workspace:FindFirstChild("Balls")
     if not balls then return nil end
@@ -442,9 +443,6 @@ local doFire = function()
     end
 end
 
--- =====================================================
--- AUTO PARRY
--- =====================================================
 local autoParryEnabled = false
 local autoParryConnection = nil
 
@@ -513,9 +511,6 @@ pcall(function() ReplicatedStorage.Remotes.DeathBall.OnClientEvent:Connect(funct
 pcall(function() ReplicatedStorage.Packages._Index["sleitnick_net@0.1.0"].net["RE/TimeHoleActivate"].OnClientEvent:Connect(function(...) local args = { ... }; local p = args[1]; if p == LocalPlayer or p == LocalPlayer.Name or (p and p.Name == LocalPlayer.Name) then Sys.__timehole_active = true end end) end)
 pcall(function() ReplicatedStorage.Packages._Index["sleitnick_net@0.1.0"].net["RE/TimeHoleDeactivate"].OnClientEvent:Connect(function() Sys.__timehole_active = false end) end)
 
--- =====================================================
--- COMBINED AUTO PARRY + SPAM PARRY LOOP
--- =====================================================
 local parriedBalls = {}
 
 local function CombinedParryLoop()
@@ -636,7 +631,6 @@ local function SetAutoParryConnection()
     if autoParryEnabled then autoParryConnection = RunService.RenderStepped:Connect(CombinedParryLoop) end
 end
 
--- Lobby Spam
 local lobbySpamEnabled = false
 RunService.Heartbeat:Connect(function()
     pcall(function()
@@ -653,9 +647,6 @@ RunService.Heartbeat:Connect(function()
     end)
 end)
 
--- =====================================================
--- UI - COMBAT TAB (Height = 300)
--- =====================================================
 local CombatTab = Window:Tab({
     Title = "Combat",
     Icon = "sword",
@@ -663,7 +654,6 @@ local CombatTab = Window:Tab({
     Color = Color3.fromRGB(255, 50, 50)
 })
 
--- ANTI LAG SECTION
 CombatTab:Section({ Title = "ANTI LAG" })
 
 CombatTab:Toggle({
@@ -675,10 +665,8 @@ CombatTab:Toggle({
     Callback = function(v) if v then Antilag:Enable() else Antilag:Disable() end end
 })
 
--- AUTO PARRY SECTION
 CombatTab:Section({ Title = "AUTO PARRY" })
 
--- 1. Auto Parry
 CombatTab:Toggle({
     Title = "Auto Parry",
     Desc = "Automatically parries ball + spam when enemy close",
@@ -687,11 +675,10 @@ CombatTab:Toggle({
     Value = false,
     Callback = function(value)
         autoParryEnabled = value; SetAutoParryConnection()
-        print("[HackerAI] Auto Parry + Spam: " .. (value and "ON" or "OFF"))
+        print
     end
 })
 
--- 2. Manual Spam Parry UI (CHỈ XUẤT HIỆN KHI BẬT TOGGLE)
 CombatTab:Toggle({
     Title = "Manual Spam Parry Ui",
     Desc = "Spam parry manual - nhấn E hoặc click nút UI",
@@ -701,15 +688,14 @@ CombatTab:Toggle({
     Callback = function(enabled)
         if enabled then
             createManualSpamUI()
-            print("[Manual Spam] UI đã được tạo - nhấn nút Spam hoặc E để bật/tắt spam")
+            print("[Manual Spam]
         else
             destroyManualSpamUI()
-            print("[Manual Spam] UI đã bị hủy")
+            print("[Manual Spam] 
         end
     end
 })
 
--- 3. Parry Accuracy
 CombatTab:Slider({
     Title = "Parry Accuracy",
     Desc = "Higher = more accurate (1-100)", Icon = "target",
@@ -717,7 +703,6 @@ CombatTab:Slider({
     Callback = function(value) Speed_Divisor_Multiplier = 0.59 + (value - 1) * (3 / 99) end
 })
 
--- 4. Spam Threshold
 CombatTab:Slider({
     Title = "Spam Threshold",
     Desc = "Min parry count before spam fires (1-3)", Icon = "trending-up",
@@ -725,7 +710,6 @@ CombatTab:Slider({
     Callback = function(value) ParryThreshold = value end
 })
 
--- 5. Play Animation
 CombatTab:Toggle({
     Title = "Play Animation",
     Desc = "Play parry animation", Icon = "film",
@@ -735,4 +719,4 @@ CombatTab:Toggle({
 
 CombatTab:Label({ Text = "" })
 
-print("[HackerAI] Loaded! | Height=300 | Manual Spam UI chỉ xuất hiện khi bật toggle")
+print
